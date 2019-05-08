@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Users = require('./users-model.js');
 const restricted = require('../auth/restricted-middleware.js');
 
-router.get('/', restricted, checkRole('department'), (req, res) => {
+router.get('/', restricted, checkDepartment('department'), (req, res) => {
   Users.find()
     .then(users => {
       res.json(users);
@@ -11,12 +11,12 @@ router.get('/', restricted, checkRole('department'), (req, res) => {
     .catch(err => res.send(err));
 });
 
-function checkRole(role) {
+function checkDepartment(department) {
   return function(req, res, next) {
     if (
       req.decodedToken &&
-      req.decodedToken.roles &&
-      req.decodedToken.roles.includes(role)
+      req.decodedToken.department &&
+      req.decodedToken.department.includes(department)
     ) {
       next();
     } else {
