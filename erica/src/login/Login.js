@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import '../css/login.css'
 
 import requiresAuth from '../auth/authHeader';
 
-class Register extends React.Component {
+class Login extends React.Component {
     state = {
           username: "",
           password: ""
@@ -14,21 +15,23 @@ class Register extends React.Component {
             [e.target.name]: e.target.value
           });
         }; 
+
         handleSubmit = e => {
           e.preventDefault();
           const credentials = this.state;
           console.log(this.state)
           axios
     
-          .post("http://localhost:5000/api/auth/register", credentials)
+          .post("http://localhost:5000/api/auth/login", credentials)
     
           .then(res => {
             // save it to localStorage
-            this.props.history.push("/");
-            console.log()
+            const token = res.data.token;
+            localStorage.setItem("jwt", token);
+            this.props.history.push("/users");
           })
     
-          .catch(err => console.log(err.response));
+          .catch(err => console.log('Login Error', err));
     
           };
     
@@ -38,8 +41,7 @@ class Register extends React.Component {
             <div className = "login-page">
               <div className= "design">
                   <div className = "orange-rectangle">
-                      <div className = "welcome">Register</div>
-                      <div className = "description">We're excited to have you! Go ahead and sign up to begin creating and finding new guides every day.</div>
+                      <div className = "welcome">Login</div>
                   </div>
                   <div className = "pale-rectangle"/>
                   <div className = "circle"/>
@@ -61,7 +63,7 @@ class Register extends React.Component {
                           value={this.state.password}
                           placeholder = "password"
                       />
-                  <button className="login">Register</button>
+                  <button className="login">Login</button>
                   </form>
               </div>
             </div>
@@ -69,4 +71,4 @@ class Register extends React.Component {
         }
 }
 
-export default Register;
+export default Login;

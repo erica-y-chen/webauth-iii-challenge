@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-
 axios.defaults.baseURL = 'http://localhost:5000/api'; // process.env.REACT_APP_API_URL
 
 axios.interceptors.request.use(
@@ -13,6 +12,7 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 export default function(Component) {
   return class Authenticated extends React.Component {
